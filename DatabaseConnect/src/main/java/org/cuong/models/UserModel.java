@@ -68,4 +68,18 @@ public class UserModel {
 			return false;
 		}
 	}
+
+	public static boolean deleteUser(DataSource dataSource, User deleteUser) {
+		String query = "delete from users where users_id = ?";
+		try (Connection conn = dataSource.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setInt(1, deleteUser.getUsers_id());
+			boolean result = statement.execute();
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

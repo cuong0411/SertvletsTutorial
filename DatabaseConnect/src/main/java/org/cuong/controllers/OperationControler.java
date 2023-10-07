@@ -36,11 +36,15 @@ public class OperationControler extends HttpServlet {
 		case "updateuser":
 			updateUserFormLoader(request, response);
 			break;
+		case "deleteuser":
+			deleteUserFormLoader(request, response);
+			break;
 		default:
 			errorPage(request, response);
 			break;
 		}
 	}
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String operation = request.getParameter("form").toLowerCase();
@@ -58,11 +62,28 @@ public class OperationControler extends HttpServlet {
 			updateUserOperation(updateUser);
 			listUser(request, response);
 			break;
+		case "deleteuseroperation":
+			User deleteUser = new User(
+					Integer.parseInt(request.getParameter("userId")),
+					request.getParameter("username"),
+					request.getParameter("email"));
+			deleteUserOperation(deleteUser);
+			listUser(request, response);
+			break;
 		default:
 			errorPage(request, response);
 			break;
 		}
 	}
+	private void deleteUserOperation(User deleteUser) {
+		UserModel.deleteUser(dataSource, deleteUser);
+	}
+
+	private void deleteUserFormLoader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("title", "Delete User");
+		request.getRequestDispatcher("deleteUser.jsp").forward(request, response);
+	}
+	
 	private void updateUserOperation(User updateUser) {
 		UserModel.updateUser(dataSource, updateUser);
 	}
@@ -70,10 +91,16 @@ public class OperationControler extends HttpServlet {
 		request.setAttribute("title", "Update User");
 		request.getRequestDispatcher("updateUser.jsp").forward(request, response);
 	}
+	
 	private void addUserOperation(User user) {
 		UserModel.addUser(dataSource, user);
 		
 	}
+	public void addUserFormLoader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("title", "Add User");
+		request.getRequestDispatcher("addUser.jsp").forward(request, response);
+	}
+	
 	public void errorPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("title", "Error Page");
 		request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -86,9 +113,4 @@ public class OperationControler extends HttpServlet {
 		
 		request.getRequestDispatcher("listUser.jsp").forward(request, response);
 	}
-	public void addUserFormLoader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("title", "Add User");
-		request.getRequestDispatcher("addUser.jsp").forward(request, response);
-	}
-
 }
