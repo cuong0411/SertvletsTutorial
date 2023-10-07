@@ -52,4 +52,20 @@ public class UserModel {
 		}
 		
 	}
+
+	public static boolean updateUser(DataSource dataSource, User updateUser) {
+		String query = "update users set username = ?, email = ? where users_id = ?";
+		try (Connection conn = dataSource.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setString(1, updateUser.getUsername());
+			statement.setString(2, updateUser.getEmail());
+			statement.setInt(3, updateUser.getUsers_id());
+			boolean result = statement.execute();
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

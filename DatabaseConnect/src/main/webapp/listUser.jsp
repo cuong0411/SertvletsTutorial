@@ -17,15 +17,24 @@
 					<th>User Id</th>
 					<th>User Name</th>
 					<th>Email</th>
+					<th>Operation</th>
 				</thead>
 				<tbody>
 					<%
 					List<User> listUser = (List<User>)  request.getAttribute("listUser");
+					String tempURL;
 					for (User user : listUser) {
 						out.print("<tr>");
 						out.print("<td>"+ user.getUsers_id() +"</td>");
 						out.print("<td>"+ user.getUsername() +"</td>");
 						out.print("<td>"+ user.getEmail() +"</td>");
+						
+						tempURL = request.getContextPath()
+								+ "/operation?page=updateUser"
+								+ "&userId=" + user.getUsers_id()
+								+ "&username=" + user.getUsername()
+								+ "&email=" +user.getEmail();
+						out.print("<td><a href=" + tempURL + ">Update<a/></td>");
 						out.print("</tr>");
 					}
 				%>
