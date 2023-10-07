@@ -13,14 +13,4 @@
     <error-code>404</error-code>
     <location>/error.jsp</location>
   </error-page>
-  <servlet>
-    <description></description>
-    <display-name>HomeControler</display-name>
-    <servlet-name>HomeControler</servlet-name>
-    <servlet-class>org.cuong.controllers.HomeControler</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>HomeControler</servlet-name>
-    <url-pattern>/home</url-pattern>
-  </servlet-mapping>
 </web-app>

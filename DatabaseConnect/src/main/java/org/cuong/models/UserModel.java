@@ -1,6 +1,7 @@
 package org.cuong.models;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,19 +16,16 @@ public class UserModel {
 	public static List<User> listUser(DataSource dataSource) {
 		// step1 Initialize connection object
 		List<User> listUser = new ArrayList<User>();
-		
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
 
-		try {
-			conn = dataSource.getConnection();
+		try (Connection conn = dataSource.getConnection();
+				Statement stmt =conn.createStatement()) {
+			
 			// step2 create a SQL statement string
 			String query = "SELECT * FROM users";
-			stmt = conn.createStatement();
+			//stmt = conn.createStatement();
 
 			// step3 execute SQL query
-			rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery(query);
 
 			// step4 process the result set
 			while (rs.next()) {
@@ -37,5 +35,21 @@ public class UserModel {
 			e.printStackTrace();
 		}
 		return listUser;
+	}
+
+	public static boolean addUser(DataSource dataSource, User user) {
+		String query = "insert into users (username, email) values (?,?)";
+		try (Connection conn = dataSource.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getEmail());
+			boolean result = statement.execute();
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 }

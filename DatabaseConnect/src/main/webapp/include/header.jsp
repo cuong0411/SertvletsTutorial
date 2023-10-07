@@ -42,12 +42,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<%=request.getContextPath()%>/home?page=home">SOLID.</a>
+          <a class="navbar-brand" href="<%=request.getContextPath()%>/site?page=home">SOLID.</a>
         </div>
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
-            <li><a href="<%=request.getContextPath()%>/home?page=home">HOME</a></li>
-            <li><a href="${pageContext.request.contextPath}/home?page=listUser">List User</a></li>
+            <li><a href="<%=request.getContextPath()%>/site?page=home">HOME</a></li>
+            <li><a href="${pageContext.request.contextPath}/operation?page=listUser">List User</a></li>
+            <li><a href="${pageContext.request.contextPath}/operation?page=addUser">Add User</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
