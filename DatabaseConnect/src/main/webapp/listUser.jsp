@@ -2,10 +2,7 @@
 <%@ include file="include/header.jsp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.cuong.entity.User" %>
-
-<!-- <c:import url="include/header.jsp"> -->
-<!-- 	<c:param name="title" value="List of Users"/> -->
-<!-- </c:import> -->
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <div class="container mtb">
 	<div class="row">
@@ -20,33 +17,32 @@
 					<th>Operation</th>
 				</thead>
 				<tbody>
-				<%! String deleteURL; %>
-					<%
-					List<User> listUser = (List<User>)  request.getAttribute("listUser");
-					String updateURL;
-					
-					for (User user : listUser) {
-						out.print("<tr>");
-						out.print("<td>"+ user.getUsers_id() +"</td>");
-						out.print("<td>"+ user.getUsername() +"</td>");
-						out.print("<td>"+ user.getEmail() +"</td>");
-						
-						updateURL = request.getContextPath()
-								+ "/operation?page=updateUser"
-								+ "&userId=" + user.getUsers_id()
-								+ "&username=" + user.getUsername()
-								+ "&email=" +user.getEmail();
-						out.print("<td><a href=" + updateURL + ">Update<a/> | ");
-						
-						deleteURL = request.getContextPath()
-								+ "/operation?page=deleteUser"
-								+ "&userId=" + user.getUsers_id()
-								+ "&username=" + user.getUsername()
-								+ "&email=" +user.getEmail();
-						%>
-						<a href="<%= deleteURL %>" onclick="if(!confirm('Are you sure to delete this user?')) return false">Delete</a>
-						</td></tr>
-						<% } %>
+				<c:forEach items="${listUser}" var="user">
+					<c:url var="updateURL" value="operation">
+						<c:param name="page" value="updateUser"></c:param>
+						<c:param name="userId" value="${user.getUsers_id()}"></c:param>
+						<c:param name="username" value="${user.getUsername()}"></c:param>
+						<c:param name="email" value="${user.getEmail()}"></c:param>
+					</c:url>
+					<c:url var="deleteURL" value="operation">
+						<c:param name="page" value="deleteUser"></c:param>
+						<c:param name="userId" value="${user.getUsers_id()}"></c:param>
+						<c:param name="username" value="${user.getUsername()}"></c:param>
+						<c:param name="email" value="${user.getEmail()}"></c:param>
+					</c:url>
+					<tr>
+						<td>${user.getUsers_id()}</td>
+						<td>${user.getUsername()}</td>
+						<td>${user.getEmail()}</td>
+						<td>
+							<a href="${updateURL}">Update</a>
+							<a href="${deleteURL}"
+								onclick="if(!confirm('Are you sure to delete this user?')) return false">Delete</a>
+						</td>
+					</tr>
+				</c:forEach>
+				
+				
 				
 				</tbody>
 			</table>
@@ -54,5 +50,4 @@
 	</div>
 </div>
 
-<!-- <c:import url="include/footer.jsp"></c:import> -->
 <%@ include file="include/footer.jsp" %>
